@@ -15,15 +15,57 @@ class CardRater {
     int[] suits = new int[Suit.values().length];
     int[] ranks = new int[Rank.values().length];
     int maxSuitCount = 0;
+    int numCards;
 
     CardRater(Cards[] allCards) {
         this.allCards = allCards;
+        this.numCards = allCards.length;
     }
 
     public int rate() {
 
-        int result = 0;
+        collectCardData();
 
+        if (numCards == 2) {
+            return rankHand();
+        }
+
+        return rateHandAndTable();
+    }
+
+    private int rateHandAndTable() {
+        for (int count : suits) {
+            if (count >= 5) {
+                return 50;
+            }
+
+            if (count == 4 && numCards < 7) {
+                return 25;
+            }
+        }
+
+
+        if (!four.isEmpty()) {
+            return  100;
+        }
+        if (!trippels.isEmpty()) {
+            if (!pairs.isEmpty()) {
+                return 200;
+            }
+            return 50;
+        }
+        if (pairs.size() == 2) {
+            return 25;
+        }
+        if (pairs.size() == 1) {
+            return pairs.get(0).getFactor();
+        }
+
+
+        return 0;
+    }
+
+    private void collectCardData() {
         for (int i = 0; i < ranks.length; i++) {
             ranks[i] = 0;
         }
@@ -57,40 +99,6 @@ class CardRater {
                 pairs.add(r);
             }
         }
-
-        if (allCards.length == 2) {
-            return rankHand();
-        }
-
-        for (int count : suits) {
-            if (count >= 5) {
-                return 50;
-            }
-
-            if (count == 4 && allCards.length < 7) {
-                return 25;
-            }
-        }
-
-
-        if (!four.isEmpty()) {
-            result = 100;
-        }
-        if (!trippels.isEmpty()) {
-            if (!pairs.isEmpty()) {
-                return 200;
-            }
-            return 50;
-        }
-        if (pairs.size() == 2) {
-            return 25;
-        }
-        if (pairs.size() == 1) {
-            return pairs.get(0).getFactor();
-        }
-
-
-        return result;
     }
 
     private int rankHand() {
