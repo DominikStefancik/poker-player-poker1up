@@ -4,13 +4,23 @@ package org.leanpoker.player;
  * ...
  */
 enum Rank {
-    Number,
-    Jack,
-    Queen,
-    King,
-    As,
+    Number(5),
+    Jack(17),
+    Queen(18),
+    King(19),
+    As(20),
 
     ;
+
+    private final int rank;
+
+    Rank(int i) {
+        this.rank = i;
+    }
+
+    public int getFactor() {
+        return rank;
+    }
 
     public static Rank fromString(String s) {
         switch (s) {
