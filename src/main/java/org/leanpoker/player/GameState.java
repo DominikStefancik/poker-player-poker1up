@@ -22,6 +22,14 @@ public class GameState {
     public int current_buy_in;
     public int pot;
 
+    public int betRequest() {
+        final int bet = raise();
+
+        System.out.println("gameState: " + this);
+        System.out.println("bet: " + bet);
+        return bet;
+    }
+
     public int call() {
         // current_buy_in - players[in_action][bet]
         return current_buy_in - players[in_action].bet;
