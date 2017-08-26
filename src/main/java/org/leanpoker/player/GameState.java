@@ -115,16 +115,16 @@ public class GameState {
         int cardsOnTable = cardRater.cardsOnTable;
 
         if (ratingOfCards < 20) {
-            return chipsForCalling >= 2 * big_blind;
+            return chipsForCalling >= 20 * big_blind;
         }
         if (ratingOfCards < 30) {
-            return chipsForCalling >= 3 * big_blind;
+            return chipsForCalling >= 30 * big_blind;
         }
         if (ratingOfCards < 40) {
-            return chipsForCalling >= 5 * big_blind;
+            return chipsForCalling >= 50 * big_blind;
         }
         if (ratingOfCards < 60) {
-            return chipsForCalling >= 7 * big_blind;
+            return chipsForCalling >= 70 * big_blind;
         }
 
         return false;
