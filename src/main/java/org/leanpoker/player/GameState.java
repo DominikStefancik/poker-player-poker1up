@@ -70,12 +70,12 @@ public class GameState {
             }
         }
 
-        if (ourCards > 60) {
+        if (ourCards > 60) { // trippels
+            bet = raise(3);
+        } else if (ourCards > 40) { // two pairs
             bet = raise(2);
-        }
-
-        if (ourCards > 60) {
-            bet = raise(2);
+        } else if (ourCards > 20) { // one pairs
+            bet = raise(1);
         }
 
         if (isAllIn(bet)) {
