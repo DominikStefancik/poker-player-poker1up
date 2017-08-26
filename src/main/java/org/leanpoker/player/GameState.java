@@ -34,6 +34,9 @@ public class GameState {
 
         if (community_cards.length == 0) {
             bet = call();
+            if (ourCards < 10 && we().bet > 10) {
+                bet = fold();
+            }
         } else {
             if (ourCards > 0) {
                 if (bet_index > 2) {
@@ -93,20 +96,18 @@ public class GameState {
             suits[s]++;
         }
 
-        List<Rank> pairs = new ArrayList<>();
-        List<Rank> trippels = new ArrayList<>();
-        List<Rank> four = new ArrayList<>();
+        int maxSuitCount = 0;
 
         for (int count : suits) {
-            if (count >= 5) {
-                return 50;
-            }
-
-            if (count == 4 && allCards.length < 7) {
-                return 25;
+            if (count > maxSuitCount) {
+                maxSuitCount = count;
             }
         }
 
+
+        List<Rank> pairs = new ArrayList<>();
+        List<Rank> trippels = new ArrayList<>();
+        List<Rank> four = new ArrayList<>();
 
         for (int i = 0; i < ranks.length; i++) {
             final int count = ranks[i];
@@ -119,6 +120,21 @@ public class GameState {
                 pairs.add(r);
             }
         }
+
+        if (allCards.length == 2) {
+            return rankHand(allCards, ranks, pairs, maxSuitCount);
+        }
+
+        for (int count : suits) {
+            if (count >= 5) {
+                return 50;
+            }
+
+            if (count == 4 && allCards.length < 7) {
+                return 25;
+            }
+        }
+
 
         if (!four.isEmpty()) {
             result = 100;
@@ -138,6 +154,25 @@ public class GameState {
 
 
         return result;
+    }
+
+    private int rankHand(Cards[] allCards, int[] ranks, List<Rank> pairs, int maxSuitCount) {
+        if (!pairs.isEmpty()) {
+            return pairs.get(0).getFactor() + 20;
+        }
+
+        if (maxSuitCount == 2) {
+            return 20;
+        }
+
+
+        for (int i = ranks.length; i > 0; i--) {
+            if (ranks[i] > 0) {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
     public int fold() {
