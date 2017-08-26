@@ -123,7 +123,7 @@ public class GameState {
         if (!four.isEmpty()) {
             result = 100;
         }
-        if (!four.isEmpty()) {
+        if (!trippels.isEmpty()) {
             if (!pairs.isEmpty()) {
                 return 200;
             }
