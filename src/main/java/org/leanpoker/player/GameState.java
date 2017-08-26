@@ -50,6 +50,9 @@ public class GameState {
             if (bet > 20 * minimum_raise && ourCards < 40) {
                 bet = foldOrCheck();
             }
+            if (isAllIn(bet) && ourCards < 50) {
+                bet = foldOrCheck();
+            }
         } else {
 
             if (ourCards == VERY_GOOD) {
