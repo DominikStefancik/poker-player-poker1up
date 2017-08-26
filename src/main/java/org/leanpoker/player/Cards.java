@@ -7,6 +7,10 @@ public class Cards {
     public String rank; // 2-10 and J,Q,K,A
     public Suit suit;
 
+    public Rank getRank() {
+        return Rank.fromString(rank);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Cards{");

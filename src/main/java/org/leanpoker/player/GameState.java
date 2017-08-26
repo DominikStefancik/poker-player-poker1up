@@ -28,7 +28,7 @@ public class GameState {
         int bet = fold();
 
         if (ourCards == 1) {
-            bet = raise();
+            bet = raise(ourCards);
         }
 
         System.out.println("======================================================");
@@ -43,11 +43,14 @@ public class GameState {
         Cards c1 = hole_cards[0];
         Cards c2 = hole_cards[1];
 
+        int result = 0;
+
         if (c1.rank.equals(c2.rank)) {
-            return 1;
+            result++;
+            result += c1.getRank().ordinal();
         }
 
-        return 0;
+        return result;
 
     }
 
