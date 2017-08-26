@@ -166,7 +166,7 @@ public class GameState {
         }
 
 
-        for (int i = ranks.length; i > 0; i--) {
+        for (int i = ranks.length-1; i > 0; i--) {
             if (ranks[i] > 0) {
                 return i;
             }
