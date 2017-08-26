@@ -70,7 +70,11 @@ public class GameState {
             }
         }
 
-        if (ourCards > 80) {
+        if (ourCards > 60) {
+            bet = raise(2);
+        }
+
+        if (ourCards > 60) {
             bet = raise(2);
         }
 

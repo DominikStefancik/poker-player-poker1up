@@ -3,6 +3,8 @@ package org.leanpoker.player;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 /**
  * ...
  */
@@ -65,12 +67,20 @@ class CardRater {
                 return VERY_GOOD;
             }
             if (trippelsWithHand > 0) {
-                result += 20;
+                result += 60;
+                result += trippels.get(0).getFactor();
             }
-            result += 60;
-            result += trippels.get(0).getFactor();
         }
 
+        if (pairs.size() == 3) {
+            if (pairsWithHand > 0) {
+                result += 20;
+            }
+            if (pairsWithHand > 1) {
+                result += 20;
+            }
+            result += NumberUtils.max(pairs.get(0).getFactor(), pairs.get(1).getFactor(), pairs.get(2).getFactor());
+        }
         if (pairs.size() == 2) {
             if (pairsWithHand > 0) {
                 result += 20;
