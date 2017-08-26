@@ -1,8 +1,6 @@
 package org.leanpoker.player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -33,18 +31,18 @@ public class GameState {
 
         final Cards[] allCards = ArrayUtils.addAll(we().hole_cards, community_cards);
         final int ourCards = new CardRater(allCards).rate();
-        int bet = fold();
+        int bet = foldOrCheck();
 
 
         if (community_cards.length == 0) {
             bet = call();
             if (ourCards < 10 && we().bet > 10) {
-                bet = fold();
+                bet = foldOrCheck();
             }
         } else {
             if (ourCards > 0) {
                 if (bet_index > 2) {
-                    bet = fold();
+                    bet = foldOrCheck();
                 } else {
                     bet = call();
                 }
@@ -57,7 +55,13 @@ public class GameState {
 
         if (isAllIn(bet)) {
             if (ourCards < 9) {
-                bet = fold();
+                bet = foldOrCheck();
+            }
+        }
+
+        if (bet == call() && bet > 20) {
+            if (ourCards < 25) {
+                bet = foldOrCheck();
             }
         }
 
@@ -78,7 +82,7 @@ public class GameState {
     }
 
 
-    public int fold() {
+    public int foldOrCheck() {
         return 0;
     }
 
