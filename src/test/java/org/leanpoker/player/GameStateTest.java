@@ -50,4 +50,10 @@ public class GameStateTest {
         System.out.println(gameState);
     }
 
+    @Test
+    public void bar() {
+        final GameState gameState = new Gson().fromJson(GameStateTest.gameState, GameState.class);
+        gameState.betRequest();
+    }
+
 }

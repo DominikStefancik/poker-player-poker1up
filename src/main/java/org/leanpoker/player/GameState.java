@@ -101,6 +101,10 @@ public class GameState {
             if (count >= 5) {
                 return 50;
             }
+
+            if (count == 4 && allCards.length < 7) {
+                return 25;
+            }
         }
 
         
