@@ -25,8 +25,11 @@ public class GameState {
     public int dealer;
     public int current_buy_in;
     public int pot;
+    
+    int big_blind;
 
     public int betRequest() {
+        big_blind = 2 * small_blind;
         System.out.println("======================================================");
         //System.out.println("gameState: " + this);
 
@@ -40,14 +43,14 @@ public class GameState {
             bet = call();
 
 
-            System.out.println("nothing on the table - bet: " + bet + " ratingOfCards: " + ratingOfCards + " mr: " + minimum_raise);
-            if (bet > 4 * minimum_raise && ratingOfCards < 10) {
+            System.out.println("nothing on the table - bet: " + bet + " ratingOfCards: " + ratingOfCards + " mr: " + small_blind);
+            if (bet > 4 * big_blind && ratingOfCards < 10) {
                 bet = foldOrCheck();
             }
-            if (bet > 10 * minimum_raise && ratingOfCards < 20) {
+            if (bet > 10 * big_blind && ratingOfCards < 20) {
                 bet = foldOrCheck();
             }
-            if (bet > 20 * minimum_raise && ratingOfCards < 40) {
+            if (bet > 20 * big_blind && ratingOfCards < 40) {
                 bet = foldOrCheck();
             }
             if (isAllIn(bet) && ratingOfCards < 50) {
@@ -112,16 +115,16 @@ public class GameState {
         int cardsOnTable = cardRater.cardsOnTable;
 
         if (ratingOfCards < 20) {
-            return chipsForCalling >= 2 * minimum_raise;
+            return chipsForCalling >= 2 * big_blind;
         }
         if (ratingOfCards < 30) {
-            return chipsForCalling >= 3 * minimum_raise;
+            return chipsForCalling >= 3 * big_blind;
         }
         if (ratingOfCards < 40) {
-            return chipsForCalling >= 5 * minimum_raise;
+            return chipsForCalling >= 5 * big_blind;
         }
         if (ratingOfCards < 60) {
-            return chipsForCalling >= 7 * minimum_raise;
+            return chipsForCalling >= 7 * big_blind;
         }
 
         return false;
@@ -146,8 +149,8 @@ public class GameState {
     }
 
     public int raise(int factor) {
-        // current_buy_in - players[in_action][bet] + minimum_raise
-        return current_buy_in - we().bet + (minimum_raise * factor);
+        // current_buy_in - players[in_action][bet] + big_blind
+        return current_buy_in - we().bet + (big_blind * factor);
     }
 
     @Override
@@ -160,7 +163,7 @@ public class GameState {
         sb.append(", small_blind=").append(small_blind);
         sb.append(", in_action=").append(in_action);
         sb.append(", orbits=").append(orbits);
-        sb.append(", minimum_raise=").append(minimum_raise);
+        sb.append(", big_blind=").append(big_blind);
         sb.append(", dealer=").append(dealer);
         sb.append(", current_buy_in=").append(current_buy_in);
         sb.append(", pot=").append(pot);
