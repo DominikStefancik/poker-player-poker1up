@@ -43,7 +43,7 @@ public class GameState {
             bet = call();
 
 
-            System.out.println("nothing on the table - bet: " + bet + " ratingOfCards: " + ratingOfCards + " mr: " + small_blind);
+            System.out.println("nothing on the table - bet: " + bet + " ratingOfCards: " + ratingOfCards + " big blind: " + big_blind);
             if (bet > 4 * big_blind && ratingOfCards < 10) {
                 bet = foldOrCheck();
             }
