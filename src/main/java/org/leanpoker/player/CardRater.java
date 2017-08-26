@@ -102,21 +102,22 @@ class CardRater {
     }
 
     private int rankHand() {
+        int result = 0;
         if (!pairs.isEmpty()) {
-            return pairs.get(0).getFactor() + 20;
+            result += 40;
         }
 
         if (maxSuitCount == 2) {
-            return 20;
+            result += 20;
         }
 
 
         for (int i = ranks.length-1; i > 0; i--) {
             if (ranks[i] > 0) {
-                return i;
+                result += i;
             }
         }
 
-        return 0;
+        return result;
     }
 }
