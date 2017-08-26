@@ -1,5 +1,6 @@
 package org.leanpoker.player;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import org.junit.Test;
 
@@ -45,7 +46,8 @@ public class GameStateTest {
 
     @Test
     public void foo() {
-        new JsonParser().parse(gameState);
+        final GameState gameState = new Gson().fromJson(GameStateTest.gameState, GameState.class);
+        System.out.println(gameState);
     }
 
 }
