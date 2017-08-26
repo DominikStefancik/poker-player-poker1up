@@ -49,6 +49,8 @@ dependencies {
         exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
     }
 
+    compile 'org.apache.commons:commons-lang3:3.6'
+
     // Testing
     testCompile ("junit:junit:4.12") {
         exclude(module: 'hamcrest-core')

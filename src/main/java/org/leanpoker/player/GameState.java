@@ -1,5 +1,7 @@
 package org.leanpoker.player;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * ...
  */
@@ -20,4 +22,8 @@ public class GameState {
     public int current_buy_in;
     public int pot;
 
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 }
