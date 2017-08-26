@@ -7,33 +7,13 @@ public class Player {
     static final String VERSION = "Default Java folding player";
 
     public static int betRequest(GameState gameState) {
-        final int bet = raise(gameState);
+        final int bet = gameState.raise();
 
         System.out.println("gameState: " + gameState);
         System.out.println("bet: " + bet);
         return bet;
     }
 
-    private static int call(GameState gameState) {
-        // current_buy_in - players[in_action][bet]
-        return gameState.current_buy_in - gameState.players[gameState.in_action].bet;
-    }
-
-    private static int raise(GameState gameState, int factor) {
-        // current_buy_in - players[in_action][bet] + gameState.minimum_raise
-        return gameState.current_buy_in - gameState.players[gameState.in_action].bet + (gameState.minimum_raise * factor);
-    }
-    private static int raise(GameState gameState) {
-        return raise(gameState, 1);
-    }
-
-    private static int round(GameState gameState) {
-        final Cards[] cc = gameState.community_cards;
-        if (cc.length == 0) {
-            return 0;
-        }
-        return cc.length - 2;
-    }
 
     public static void showdown(JsonElement game) {
     }

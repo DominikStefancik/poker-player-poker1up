@@ -22,6 +22,28 @@ public class GameState {
     public int current_buy_in;
     public int pot;
 
+    public int call() {
+        // current_buy_in - players[in_action][bet]
+        return current_buy_in - players[in_action].bet;
+    }
+
+    public int raise(int factor) {
+        // current_buy_in - players[in_action][bet] + minimum_raise
+        return current_buy_in - players[in_action].bet + (minimum_raise * factor);
+    }
+    public int raise() {
+        return raise(1);
+    }
+
+    public int round() {
+        final Cards[] cc = community_cards;
+        if (cc.length == 0) {
+            return 0;
+        }
+        return cc.length - 2;
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("GameState{");
