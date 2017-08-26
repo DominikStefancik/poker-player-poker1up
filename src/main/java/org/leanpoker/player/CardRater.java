@@ -9,17 +9,28 @@ import java.util.List;
 class CardRater {
 
     Cards[] allCards;
+    int numCards;
+    int remainingCards;
+
+    int[] suits = new int[Suit.values().length];
+    int[] ranks = new int[Rank.values().length];
+
     List<Rank> pairs = new ArrayList<>();
     List<Rank> trippels = new ArrayList<>();
     List<Rank> four = new ArrayList<>();
-    int[] suits = new int[Suit.values().length];
-    int[] ranks = new int[Rank.values().length];
+
+    int pairsWithHand = 0;
+    int trippelsWithHand = 0;
+    int fourWithHand = 0;
+
     int maxSuitCount = 0;
-    int numCards;
+
+    static final int GOOD = 1000;
 
     CardRater(Cards[] allCards) {
         this.allCards = allCards;
         this.numCards = allCards.length;
+        this.remainingCards = 7 - numCards;
     }
 
     public int rate() {
@@ -38,28 +49,38 @@ class CardRater {
 
         for (int count : suits) {
             if (count >= 5) {
-                result += 50;
-            } else if (count == 4 && numCards < 7) {
+                return GOOD;
+            } else if (count == 4 && remainingCards > 0) {
                 result += 25;
             }
         }
 
         if (!four.isEmpty()) {
-            result += 100;
+            return GOOD;
         }
         if (!trippels.isEmpty()) {
             if (!pairs.isEmpty()) {
-                result += 200;
+                return GOOD;
             }
-            result += 50;
-        }
-        if (pairs.size() == 2) {
-            result += 25;
-        }
-        if (pairs.size() == 1) {
-            result += pairs.get(0).getFactor();
+            result += 60;
+            result += trippels.get(0).getFactor();
         }
 
+        if (pairs.size() == 2) {
+            if (pairsWithHand > 0) {
+                result += 20;
+            }
+            if (pairsWithHand > 1) {
+                result += 20;
+            }
+            result += Math.max(pairs.get(0).getFactor(), pairs.get(1).getFactor());
+        }
+        if (pairs.size() == 1) {
+            if (pairsWithHand > 0) {
+                result += 20;
+            }
+            result += pairs.get(0).getFactor();
+        }
 
         return result;
     }
@@ -96,6 +117,22 @@ class CardRater {
                 trippels.add(r);
             } else if (count == 2) {
                 pairs.add(r);
+            }
+        }
+
+        for (Rank r : pairs) {
+            if (allCards[0].getRank() == r || allCards[1].getRank() == r) {
+                pairsWithHand++;
+            }
+        }
+        for (Rank r : trippels) {
+            if (allCards[0].getRank() == r || allCards[1].getRank() == r) {
+                trippelsWithHand++;
+            }
+        }
+        for (Rank r : four) {
+            if (allCards[0].getRank() == r || allCards[1].getRank() == r) {
+                fourWithHand++;
             }
         }
     }
