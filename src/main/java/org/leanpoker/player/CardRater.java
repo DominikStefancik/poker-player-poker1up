@@ -56,11 +56,16 @@ class CardRater {
         }
 
         if (!four.isEmpty()) {
-            return VERY_GOOD;
+            if (fourWithHand > 0) {
+                return VERY_GOOD;
+            }
         }
         if (!trippels.isEmpty()) {
             if (!pairs.isEmpty()) {
                 return VERY_GOOD;
+            }
+            if (trippelsWithHand > 0) {
+                result += 20;
             }
             result += 60;
             result += trippels.get(0).getFactor();

@@ -34,7 +34,7 @@ public class GameState {
         final Cards[] allCards = ArrayUtils.addAll(we().hole_cards, community_cards);
         final CardRater cardRater = new CardRater(allCards);
         final int ourCards = cardRater.rate();
-        int bet = foldOrCheck();
+        int bet;
 
 
         if (community_cards.length == 0) {
@@ -60,7 +60,7 @@ public class GameState {
     }
 
     private int getComplicatedBet(CardRater cardRater, int ourCards) {
-        int bet = 0;
+        int bet = foldOrCheck();
 
         if (ourCards > 0) {
             if (bet_index > 2) {
@@ -70,8 +70,8 @@ public class GameState {
             }
         }
 
-        if (ourCards > 10) {
-            bet = raise(1);
+        if (ourCards > 80) {
+            bet = raise();
         }
 
         if (isAllIn(bet)) {
