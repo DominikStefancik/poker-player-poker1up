@@ -27,6 +27,14 @@ public class Player {
         return raise(gameState, 1);
     }
 
+    private static int round(GameState gameState) {
+        final Cards[] cc = gameState.community_cards;
+        if (cc.length == 0) {
+            return 0;
+        }
+        return cc.length - 2;
+    }
+
     public static void showdown(JsonElement game) {
     }
 }
