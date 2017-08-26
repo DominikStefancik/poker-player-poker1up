@@ -1,7 +1,6 @@
 package org.leanpoker.player;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import java.util.Arrays;
 
 /**
  * ...
@@ -25,6 +24,19 @@ public class GameState {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        final StringBuilder sb = new StringBuilder("GameState{");
+        sb.append("players=").append(Arrays.toString(players));
+        sb.append(", community_cards=").append(Arrays.toString(community_cards));
+        sb.append(", round=").append(round);
+        sb.append(", bet_index=").append(bet_index);
+        sb.append(", small_blind=").append(small_blind);
+        sb.append(", in_action=").append(in_action);
+        sb.append(", orbits=").append(orbits);
+        sb.append(", minimum_raise=").append(minimum_raise);
+        sb.append(", dealer=").append(dealer);
+        sb.append(", current_buy_in=").append(current_buy_in);
+        sb.append(", pot=").append(pot);
+        sb.append('}');
+        return sb.toString();
     }
 }
