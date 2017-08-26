@@ -28,7 +28,7 @@ public class GameState {
 
     public int betRequest() {
         System.out.println("======================================================");
-        System.out.println("gameState: " + this);
+        //System.out.println("gameState: " + this);
 
 
         final Cards[] allCards = ArrayUtils.addAll(we().hole_cards, community_cards);
@@ -36,15 +36,13 @@ public class GameState {
         final int ourCards = cardRater.rate();
         int bet;
 
-
         if (community_cards.length == 0) {
             bet = call();
-            if (ourCards < 10 && we().bet > 10) {
-                bet = foldOrCheck();
-            }
 
-            if (bet == call() && bet > 4 * minimum_raise) {
-                if (ourCards < 30) {
+
+            System.out.println("two cards only: " + bet + " oc: " + ourCards + " mr: " + minimum_raise);
+            if (bet > 4 * minimum_raise) {
+                if (ourCards < 10) {
                     bet = foldOrCheck();
                 }
             }
