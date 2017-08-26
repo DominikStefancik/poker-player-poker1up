@@ -82,7 +82,7 @@ public class GameState {
         }
 
         int[] suits = new int[Suit.values().length];
-        for (int i = 0 ; i < ranks.length; i++) {
+        for (int i = 0 ; i < suits.length; i++) {
             suits[i] = 0;
         }
 
