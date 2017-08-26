@@ -1,6 +1,10 @@
 package org.leanpoker.player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * ...
@@ -24,11 +28,20 @@ public class GameState {
 
     public int betRequest() {
 
-        final int ourCards = rate(we().hole_cards);
+        final int ourCards = rate(ArrayUtils.addAll(we().hole_cards, community_cards));
         int bet = fold();
 
         if (ourCards > 0) {
-            bet = raise(ourCards);
+            if (bet_index > 2) {
+                bet = fold();
+            }
+            else {
+                bet = call();
+            }
+        }
+
+        if (ourCards > 10) {
+            bet = raise();
         }
 
         if (isAllIn(bet)) {
@@ -55,21 +68,55 @@ public class GameState {
         return we().stack <= bet;
     }
 
-    private int rate(Cards[] hole_cards) {
-        Cards c1 = hole_cards[0];
-        Cards c2 = hole_cards[1];
+    private int rate(Cards[] allCards) {
 
         int result = 0;
 
-        if (c1.rank.equals(c2.rank)) {
-            result += c1.getRank().getFactor();
+        int[] ranks = new int[Rank.values().length];
+        for (int i = 0 ; i < ranks.length; i++) {
+            ranks[i] = 0;
+        }
+
+        for (final Cards allCard : allCards) {
+            final int index = allCard.getRank().ordinal();
+            ranks[index]++;
+        }
+
+        List<Rank> pairs = new ArrayList<>();
+        List<Rank> trippels = new ArrayList<>();
+        List<Rank> four = new ArrayList<>();
+
+        for (int i = 0 ; i < ranks.length; i++) {
+            final int count = ranks[i];
+            final Rank r = Rank.values()[i];
+            if (count == 4) {
+                four.add(r);
+            }
+            else if (count == 3) {
+                trippels.add(r);
+            }
+            else if (count == 2) {
+                pairs.add(r);
+            }
+        }
+
+        if (!four.isEmpty()) {
+            result = 100;
+        }
+        if (!four.isEmpty()) {
+            if (!pairs.isEmpty()) {
+                return 200;
+            }
+            return 50;
+        }
+        if (pairs.size() == 2) {
+            return 25;
+        }
+        if (pairs.size() == 1) {
+            return pairs.get(0).getFactor();
         }
 
         return result;
-    }
-
-    private int rate(Cards[] hole_cards, Cards[] cc) {
-
     }
 
     public int fold() {
