@@ -28,7 +28,8 @@ public class GameState {
 
     public int betRequest() {
 
-        final int ourCards = rate(ArrayUtils.addAll(we().hole_cards, community_cards));
+        final Cards[] allCards = ArrayUtils.addAll(we().hole_cards, community_cards);
+        final int ourCards = new CardRater(allCards).rate();
         int bet = fold();
 
 
@@ -48,7 +49,7 @@ public class GameState {
         }
 
         if (ourCards > 10) {
-            bet = raise();
+            bet = raise(1);
         }
 
         if (isAllIn(bet)) {
@@ -75,105 +76,6 @@ public class GameState {
         return we().stack <= bet;
     }
 
-    private int rate(Cards[] allCards) {
-
-        int result = 0;
-
-        int[] ranks = new int[Rank.values().length];
-        for (int i = 0; i < ranks.length; i++) {
-            ranks[i] = 0;
-        }
-
-        int[] suits = new int[Suit.values().length];
-        for (int i = 0; i < suits.length; i++) {
-            suits[i] = 0;
-        }
-
-        for (final Cards card : allCards) {
-            final int r = card.getRank().ordinal();
-            final int s = card.suit.ordinal();
-            ranks[r]++;
-            suits[s]++;
-        }
-
-        int maxSuitCount = 0;
-
-        for (int count : suits) {
-            if (count > maxSuitCount) {
-                maxSuitCount = count;
-            }
-        }
-
-
-        List<Rank> pairs = new ArrayList<>();
-        List<Rank> trippels = new ArrayList<>();
-        List<Rank> four = new ArrayList<>();
-
-        for (int i = 0; i < ranks.length; i++) {
-            final int count = ranks[i];
-            final Rank r = Rank.values()[i];
-            if (count == 4) {
-                four.add(r);
-            } else if (count == 3) {
-                trippels.add(r);
-            } else if (count == 2) {
-                pairs.add(r);
-            }
-        }
-
-        if (allCards.length == 2) {
-            return rankHand(allCards, ranks, pairs, maxSuitCount);
-        }
-
-        for (int count : suits) {
-            if (count >= 5) {
-                return 50;
-            }
-
-            if (count == 4 && allCards.length < 7) {
-                return 25;
-            }
-        }
-
-
-        if (!four.isEmpty()) {
-            result = 100;
-        }
-        if (!trippels.isEmpty()) {
-            if (!pairs.isEmpty()) {
-                return 200;
-            }
-            return 50;
-        }
-        if (pairs.size() == 2) {
-            return 25;
-        }
-        if (pairs.size() == 1) {
-            return pairs.get(0).getFactor();
-        }
-
-
-        return result;
-    }
-
-    private int rankHand(Cards[] allCards, int[] ranks, List<Rank> pairs, int maxSuitCount) {
-        if (!pairs.isEmpty()) {
-            return pairs.get(0).getFactor() + 20;
-        }
-
-        if (maxSuitCount == 2) {
-            return 20;
-        }
-
-
-        for (int i = ranks.length-1; i > 0; i--) {
-            if (ranks[i] > 0) {
-                return i;
-            }
-        }
-
-        return 0;
-    }
 
     public int fold() {
         return 0;
@@ -188,19 +90,6 @@ public class GameState {
         // current_buy_in - players[in_action][bet] + minimum_raise
         return current_buy_in - we().bet + (minimum_raise * factor);
     }
-
-    public int raise() {
-        return raise(1);
-    }
-
-    public int round() {
-        final Cards[] cc = community_cards;
-        if (cc.length == 0) {
-            return 0;
-        }
-        return cc.length - 2;
-    }
-
 
     @Override
     public String toString() {
