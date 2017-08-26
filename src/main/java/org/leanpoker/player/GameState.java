@@ -77,14 +77,29 @@ public class GameState {
             ranks[i] = 0;
         }
 
-        for (final Cards allCard : allCards) {
-            final int index = allCard.getRank().ordinal();
-            ranks[index]++;
+        int[] suits = new int[Suit.values().length];
+        for (int i = 0 ; i < ranks.length; i++) {
+            suits[i] = 0;
+        }
+
+        for (final Cards card : allCards) {
+            final int r = card.getRank().ordinal();
+            final int s = card.suit.ordinal();
+            ranks[r]++;
+            suits[s]++;
         }
 
         List<Rank> pairs = new ArrayList<>();
         List<Rank> trippels = new ArrayList<>();
         List<Rank> four = new ArrayList<>();
+
+        for (int count : suits) {
+            if (count >= 5) {
+                return 50;
+            }
+        }
+
+        
 
         for (int i = 0 ; i < ranks.length; i++) {
             final int count = ranks[i];
@@ -115,6 +130,7 @@ public class GameState {
         if (pairs.size() == 1) {
             return pairs.get(0).getFactor();
         }
+
 
         return result;
     }
