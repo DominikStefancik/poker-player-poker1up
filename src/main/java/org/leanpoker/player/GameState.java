@@ -40,6 +40,10 @@ public class GameState {
             }
         }
 
+        if ( community_cards.length == 0) {
+            bet = call();
+        }
+
         if (ourCards > 10) {
             bet = raise();
         }
