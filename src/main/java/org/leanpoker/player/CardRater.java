@@ -34,35 +34,34 @@ class CardRater {
     }
 
     private int rateHandAndTable() {
+        int result = 0;
+
         for (int count : suits) {
             if (count >= 5) {
-                return 50;
-            }
-
-            if (count == 4 && numCards < 7) {
-                return 25;
+                result += 50;
+            } else if (count == 4 && numCards < 7) {
+                result += 25;
             }
         }
 
-
         if (!four.isEmpty()) {
-            return  100;
+            result += 100;
         }
         if (!trippels.isEmpty()) {
             if (!pairs.isEmpty()) {
-                return 200;
+                result += 200;
             }
-            return 50;
+            result += 50;
         }
         if (pairs.size() == 2) {
-            return 25;
+            result += 25;
         }
         if (pairs.size() == 1) {
-            return pairs.get(0).getFactor();
+            result += pairs.get(0).getFactor();
         }
 
 
-        return 0;
+        return result;
     }
 
     private void collectCardData() {
@@ -112,7 +111,7 @@ class CardRater {
         }
 
 
-        for (int i = ranks.length-1; i > 0; i--) {
+        for (int i = ranks.length - 1; i > 0; i--) {
             if (ranks[i] > 0) {
                 result += i;
             }
