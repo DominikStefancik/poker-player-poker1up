@@ -69,8 +69,12 @@ public class GameState {
         return bet;
     }
 
-    private int getComplicatedBet(CardRater cardRater, int ratingOfCards) {
+    private int getComplicatedBet(CardRater weWantToFold, int ratingOfCards) {
         int bet = foldOrCheck();
+
+        if (call() > 0 && weWantToFold(weWantToFold, ratingOfCards)) {
+            return foldOrCheck();
+        }
 
         if (ratingOfCards > 0) {
             if (bet_index > 2) {
@@ -100,6 +104,27 @@ public class GameState {
             }
         }
         return bet;
+    }
+
+    private boolean weWantToFold(CardRater cardRater, int ratingOfCards) {
+        int chipsForCalling = call();
+        int ourChips = we().stack;
+        int cardsOnTable = cardRater.cardsOnTable;
+
+        if (ratingOfCards < 20) {
+            return chipsForCalling >= 2 * minimum_raise;
+        }
+        if (ratingOfCards < 30) {
+            return chipsForCalling >= 3 * minimum_raise;
+        }
+        if (ratingOfCards < 40) {
+            return chipsForCalling >= 5 * minimum_raise;
+        }
+        if (ratingOfCards < 60) {
+            return chipsForCalling >= 7 * minimum_raise;
+        }
+
+        return false;
     }
 
     private PlayerState we() {

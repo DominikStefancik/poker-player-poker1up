@@ -13,6 +13,7 @@ class CardRater {
     Cards[] allCards;
     int numCards;
     int remainingCards;
+    int cardsOnTable;
 
     int[] suits = new int[Suit.values().length];
     int[] ranks = new int[Rank.values().length];
@@ -33,6 +34,7 @@ class CardRater {
         this.allCards = allCards;
         this.numCards = allCards.length;
         this.remainingCards = 7 - numCards;
+        this.cardsOnTable = this.numCards - 2;
     }
 
     public int rate() {
