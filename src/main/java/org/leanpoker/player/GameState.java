@@ -41,10 +41,14 @@ public class GameState {
 
 
             System.out.println("two cards only: " + bet + " oc: " + ourCards + " mr: " + minimum_raise);
-            if (bet > 4 * minimum_raise) {
-                if (ourCards < 10) {
-                    bet = foldOrCheck();
-                }
+            if (bet > 4 * minimum_raise && ourCards < 10) {
+                bet = foldOrCheck();
+            }
+            if (bet > 10 * minimum_raise && ourCards < 20) {
+                bet = foldOrCheck();
+            }
+            if (bet > 20 * minimum_raise && ourCards < 40) {
+                bet = foldOrCheck();
             }
         } else {
 
