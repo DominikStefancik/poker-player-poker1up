@@ -33,47 +33,46 @@ public class GameState {
 
         final Cards[] allCards = ArrayUtils.addAll(we().hole_cards, community_cards);
         final CardRater cardRater = new CardRater(allCards);
-        final int ourCards = cardRater.rate();
+        final int ratingOfCards = cardRater.rate();
         int bet;
 
         if (community_cards.length == 0) {
             bet = call();
 
 
-            System.out.println("two cards only: " + bet + " oc: " + ourCards + " mr: " + minimum_raise);
-            if (bet > 4 * minimum_raise && ourCards < 10) {
+            System.out.println("nothing on the table - bet: " + bet + " ratingOfCards: " + ratingOfCards + " mr: " + minimum_raise);
+            if (bet > 4 * minimum_raise && ratingOfCards < 10) {
                 bet = foldOrCheck();
             }
-            if (bet > 10 * minimum_raise && ourCards < 20) {
+            if (bet > 10 * minimum_raise && ratingOfCards < 20) {
                 bet = foldOrCheck();
             }
-            if (bet > 20 * minimum_raise && ourCards < 40) {
+            if (bet > 20 * minimum_raise && ratingOfCards < 40) {
                 bet = foldOrCheck();
             }
-            if (isAllIn(bet) && ourCards < 50) {
+            if (isAllIn(bet) && ratingOfCards < 50) {
                 bet = foldOrCheck();
             }
         } else {
 
-            if (ourCards == VERY_GOOD) {
+            if (ratingOfCards == VERY_GOOD) {
                 bet = raise(20);
             } else {
-                bet = getComplicatedBet(cardRater, ourCards);
+                bet = getComplicatedBet(cardRater, ratingOfCards);
             }
         }
 
         bet = Math.max(0, bet);
 
-        System.out.println("ourCards: " + ourCards);
+        System.out.println("ratingOfCards: " + ratingOfCards);
         System.out.println("bet: " + bet);
-        System.out.println("======================================================");
         return bet;
     }
 
-    private int getComplicatedBet(CardRater cardRater, int ourCards) {
+    private int getComplicatedBet(CardRater cardRater, int ratingOfCards) {
         int bet = foldOrCheck();
 
-        if (ourCards > 0) {
+        if (ratingOfCards > 0) {
             if (bet_index > 2) {
                 bet = foldOrCheck();
             } else {
@@ -81,22 +80,22 @@ public class GameState {
             }
         }
 
-        if (ourCards > 60) { // trippels
+        if (ratingOfCards > 60) { // trippels
             bet = raise(3);
-        } else if (ourCards > 40) { // two pairs
+        } else if (ratingOfCards > 40) { // two pairs
             bet = raise(2);
-        } else if (ourCards > 20) { // one pairs
+        } else if (ratingOfCards > 20) { // one pairs
             bet = raise(1);
         }
 
         if (isAllIn(bet)) {
-            if (ourCards < 9) {
+            if (ratingOfCards < 9) {
                 bet = foldOrCheck();
             }
         }
 
         if (bet == call() && bet > 20) {
-            if (ourCards < 25) {
+            if (ratingOfCards < 25) {
                 bet = foldOrCheck();
             }
         }
