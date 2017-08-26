@@ -31,17 +31,17 @@ public class GameState {
         final int ourCards = rate(ArrayUtils.addAll(we().hole_cards, community_cards));
         int bet = fold();
 
-        if (ourCards > 0) {
-            if (bet_index > 2) {
-                bet = fold();
-            }
-            else {
-                bet = call();
-            }
-        }
 
-        if ( community_cards.length == 0) {
+        if (community_cards.length == 0) {
             bet = call();
+        } else {
+            if (ourCards > 0) {
+                if (bet_index > 2) {
+                    bet = fold();
+                } else {
+                    bet = call();
+                }
+            }
         }
 
         if (ourCards > 10) {
@@ -77,12 +77,12 @@ public class GameState {
         int result = 0;
 
         int[] ranks = new int[Rank.values().length];
-        for (int i = 0 ; i < ranks.length; i++) {
+        for (int i = 0; i < ranks.length; i++) {
             ranks[i] = 0;
         }
 
         int[] suits = new int[Suit.values().length];
-        for (int i = 0 ; i < suits.length; i++) {
+        for (int i = 0; i < suits.length; i++) {
             suits[i] = 0;
         }
 
@@ -107,18 +107,15 @@ public class GameState {
             }
         }
 
-        
 
-        for (int i = 0 ; i < ranks.length; i++) {
+        for (int i = 0; i < ranks.length; i++) {
             final int count = ranks[i];
             final Rank r = Rank.values()[i];
             if (count == 4) {
                 four.add(r);
-            }
-            else if (count == 3) {
+            } else if (count == 3) {
                 trippels.add(r);
-            }
-            else if (count == 2) {
+            } else if (count == 2) {
                 pairs.add(r);
             }
         }
@@ -156,6 +153,7 @@ public class GameState {
         // current_buy_in - players[in_action][bet] + minimum_raise
         return current_buy_in - we().bet + (minimum_raise * factor);
     }
+
     public int raise() {
         return raise(1);
     }
