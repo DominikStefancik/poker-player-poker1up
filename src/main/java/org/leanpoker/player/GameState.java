@@ -71,7 +71,7 @@ public class GameState {
         }
 
         if (ourCards > 80) {
-            bet = raise();
+            bet = raise(2);
         }
 
         if (isAllIn(bet)) {
