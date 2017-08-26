@@ -23,11 +23,36 @@ public class GameState {
     public int pot;
 
     public int betRequest() {
-        final int bet = raise();
 
+        final int ourCards = rate(players[in_action].hole_cards);
+        int bet = fold();
+
+        if (ourCards == 1) {
+            bet = raise();
+        }
+
+        System.out.println("======================================================");
         System.out.println("gameState: " + this);
+        System.out.println("ourCards: " + bet);
         System.out.println("bet: " + bet);
+        System.out.println("======================================================");
         return bet;
+    }
+
+    private int rate(Cards[] hole_cards) {
+        Cards c1 = hole_cards[0];
+        Cards c2 = hole_cards[1];
+
+        if (c1.rank.equals(c2.rank)) {
+            return 1;
+        }
+
+        return 0;
+
+    }
+
+    public int fold() {
+        return 0;
     }
 
     public int call() {
