@@ -27,6 +27,9 @@ public class GameState {
     public int pot;
 
     public int betRequest() {
+        System.out.println("======================================================");
+        System.out.println("gameState: " + this);
+
 
         final Cards[] allCards = ArrayUtils.addAll(we().hole_cards, community_cards);
         final int ourCards = new CardRater(allCards).rate();
@@ -60,9 +63,7 @@ public class GameState {
 
         bet = Math.max(0, bet);
 
-        System.out.println("======================================================");
-        System.out.println("gameState: " + this);
-        System.out.println("ourCards: " + bet);
+        System.out.println("ourCards: " + ourCards);
         System.out.println("bet: " + bet);
         System.out.println("======================================================");
         return bet;
