@@ -24,11 +24,17 @@ public class GameState {
 
     public int betRequest() {
 
-        final int ourCards = rate(players[in_action].hole_cards);
+        final int ourCards = rate(we().hole_cards);
         int bet = fold();
 
         if (ourCards > 0) {
             bet = raise(ourCards);
+        }
+
+        if (isAllIn(bet)) {
+            if (ourCards < 9) {
+                bet = fold();
+            }
         }
 
         bet = Math.max(0, bet);
@@ -39,6 +45,14 @@ public class GameState {
         System.out.println("bet: " + bet);
         System.out.println("======================================================");
         return bet;
+    }
+
+    private PlayerState we() {
+        return players[in_action];
+    }
+
+    private boolean isAllIn(int bet) {
+        return we().stack <= bet;
     }
 
     private int rate(Cards[] hole_cards) {
@@ -64,12 +78,12 @@ public class GameState {
 
     public int call() {
         // current_buy_in - players[in_action][bet]
-        return current_buy_in - players[in_action].bet;
+        return current_buy_in - we().bet;
     }
 
     public int raise(int factor) {
         // current_buy_in - players[in_action][bet] + minimum_raise
-        return current_buy_in - players[in_action].bet + (minimum_raise * factor);
+        return current_buy_in - we().bet + (minimum_raise * factor);
     }
     public int raise() {
         return raise(1);
