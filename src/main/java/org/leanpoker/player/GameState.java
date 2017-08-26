@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import static org.leanpoker.player.CardRater.VERY_GOOD;
+
 /**
  * ...
  */
@@ -30,7 +32,8 @@ public class GameState {
 
 
         final Cards[] allCards = ArrayUtils.addAll(we().hole_cards, community_cards);
-        final int ourCards = new CardRater(allCards).rate();
+        final CardRater cardRater = new CardRater(allCards);
+        final int ourCards = cardRater.rate();
         int bet = foldOrCheck();
 
 
@@ -40,12 +43,30 @@ public class GameState {
                 bet = foldOrCheck();
             }
         } else {
-            if (ourCards > 0) {
-                if (bet_index > 2) {
-                    bet = foldOrCheck();
-                } else {
-                    bet = call();
-                }
+
+            if (ourCards == VERY_GOOD) {
+                bet = raise(20);
+            } else {
+                bet = getComplicatedBet(cardRater, ourCards);
+            }
+        }
+
+        bet = Math.max(0, bet);
+
+        System.out.println("ourCards: " + ourCards);
+        System.out.println("bet: " + bet);
+        System.out.println("======================================================");
+        return bet;
+    }
+
+    private int getComplicatedBet(CardRater cardRater, int ourCards) {
+        int bet = 0;
+
+        if (ourCards > 0) {
+            if (bet_index > 2) {
+                bet = foldOrCheck();
+            } else {
+                bet = call();
             }
         }
 
@@ -64,12 +85,6 @@ public class GameState {
                 bet = foldOrCheck();
             }
         }
-
-        bet = Math.max(0, bet);
-
-        System.out.println("ourCards: " + ourCards);
-        System.out.println("bet: " + bet);
-        System.out.println("======================================================");
         return bet;
     }
 

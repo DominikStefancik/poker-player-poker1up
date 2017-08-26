@@ -25,7 +25,7 @@ class CardRater {
 
     int maxSuitCount = 0;
 
-    static final int GOOD = 1000;
+    static final int VERY_GOOD = 1000;
 
     CardRater(Cards[] allCards) {
         this.allCards = allCards;
@@ -49,18 +49,18 @@ class CardRater {
 
         for (int count : suits) {
             if (count >= 5) {
-                return GOOD;
+                return VERY_GOOD;
             } else if (count == 4 && remainingCards > 0) {
                 result += 25;
             }
         }
 
         if (!four.isEmpty()) {
-            return GOOD;
+            return VERY_GOOD;
         }
         if (!trippels.isEmpty()) {
             if (!pairs.isEmpty()) {
-                return GOOD;
+                return VERY_GOOD;
             }
             result += 60;
             result += trippels.get(0).getFactor();
