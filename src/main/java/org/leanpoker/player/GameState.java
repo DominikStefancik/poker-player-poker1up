@@ -42,6 +42,12 @@ public class GameState {
             if (ourCards < 10 && we().bet > 10) {
                 bet = foldOrCheck();
             }
+
+            if (bet == call() && bet > 4 * minimum_raise) {
+                if (ourCards < 30) {
+                    bet = foldOrCheck();
+                }
+            }
         } else {
 
             if (ourCards == VERY_GOOD) {
