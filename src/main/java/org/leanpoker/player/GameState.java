@@ -28,7 +28,7 @@ public class GameState {
         int bet = fold();
 
         if (ourCards > 0) {
-            bet = raise();
+            bet = raise(ourCards);
         }
 
         System.out.println("======================================================");
@@ -46,12 +46,10 @@ public class GameState {
         int result = 0;
 
         if (c1.rank.equals(c2.rank)) {
-            result++;
             result += c1.getRank().getFactor();
         }
 
         return result;
-
     }
 
     public int fold() {
