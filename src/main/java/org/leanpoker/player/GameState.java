@@ -31,6 +31,8 @@ public class GameState {
             bet = raise(ourCards);
         }
 
+        bet = Math.max(0, bet);
+
         System.out.println("======================================================");
         System.out.println("gameState: " + this);
         System.out.println("ourCards: " + bet);
@@ -50,6 +52,10 @@ public class GameState {
         }
 
         return result;
+    }
+
+    private int rate(Cards[] hole_cards, Cards[] cc) {
+
     }
 
     public int fold() {
