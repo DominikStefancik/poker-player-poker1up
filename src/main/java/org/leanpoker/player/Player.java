@@ -3,9 +3,6 @@ package org.leanpoker.player;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
-import java.util.Map;
 
 public class Player {
 
@@ -19,6 +16,13 @@ public class Player {
         final int bet = players.get(in_action).getAsJsonObject().getAsJsonPrimitive("bet").getAsInt();
 
         return current_buy_in - bet;
+    }
+
+    public static int betRequest(GameState gameState) {
+        //current_buy_in - players[in_action][bet] + minimum_raise
+        final int bet = gameState.current_buy_in - gameState.players[gameState.in_action].bet + gameState.minimum_raise;
+        System.out.println("bet: " + bet);
+        return bet;
     }
 
     public static void showdown(JsonElement game) {

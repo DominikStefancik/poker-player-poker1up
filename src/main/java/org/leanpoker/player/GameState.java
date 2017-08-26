@@ -13,7 +13,9 @@ public class GameState {
     public int round;
     public int bet_index;
     public int small_blind;
+    public int in_action;
     public int orbits;
+    public int minimum_raise;
     public int dealer;
     public int current_buy_in;
     public int pot;
